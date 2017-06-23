@@ -1,0 +1,13 @@
+https://sites.google.com/site/vanyambauseslinux/arduino/arduino-tips-and-tricks
+	- трюки и хитрости
+https://sites.google.com/site/vanyambauseslinux/arduino/vremennye-zaderzki-na-preryvaniah-ot-tajmera
+	- прерывания
+
+http://mainloop.ru/avr-atmega
+	- всякая всячина про Avr
+
+http://chipenable.ru/index.php/programming-avr/item/187-uchebnyy-kurs-avr-taymer-schetchik-t0-rezhim-normal-ch2.html
+	- Полезные статьи AVR	
+
+http://www.chipdip.ru/video/id000525153/
+	- звуковая микросхема

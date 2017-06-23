@@ -1,0 +1,13 @@
+<GLCD>
+	<Attributes>
+		<Url></Url>
+		<Image>GLCD.jpg</Image>
+		<File></File>
+	</Attributes>
+	<Events>
+		<OnLeftClick></OnLeftClick>
+		<OnRightClick></OnRightClick>
+		<OnDblClick></OnDblClick>
+		<OnMouseOver>PreviewImage</OnMouseOver>
+	</Events>
+</GLCD>

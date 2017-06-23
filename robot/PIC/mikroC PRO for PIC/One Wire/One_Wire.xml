@@ -1,0 +1,13 @@
+<DS1820>
+	<Attributes>
+		<Url></Url>
+		<Image>One Wire.jpg</Image>
+		<File></File>
+	</Attributes>
+	<Events>
+		<OnLeftClick>None</OnLeftClick>
+		<OnRightClick>None</OnRightClick>
+		<OnDblClick>None</OnDblClick>
+		<OnMouseOver>PreviewImage</OnMouseOver>
+	</Events>
+</DS1820>

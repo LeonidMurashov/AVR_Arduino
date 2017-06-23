@@ -1,0 +1,13 @@
+<LCD>
+	<Attributes>
+		<Url></Url>
+		<Image>LCD.jpg</Image>
+		<File></File>
+	</Attributes>
+	<Events>
+		<OnLeftClick>None</OnLeftClick>
+		<OnRightClick>None</OnRightClick>
+		<OnDblClick>None</OnDblClick>
+		<OnMouseOver>PreviewImage</OnMouseOver>
+	</Events>
+</LCD>

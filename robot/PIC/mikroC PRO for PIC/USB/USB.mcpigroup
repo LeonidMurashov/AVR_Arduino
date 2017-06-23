@@ -1,0 +1,6 @@
+[PROJECTS]
+Count=2
+Project0=HID Read Write Interrupt\HID_Read_Write_Interrupt.mcppi
+Project1=HID Read Write Polling\HID_Read_Write_Polling.mcppi
+[ActiveProject]
+Index=0

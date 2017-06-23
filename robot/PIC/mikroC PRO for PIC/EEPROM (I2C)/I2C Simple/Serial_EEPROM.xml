@@ -1,0 +1,13 @@
+<Serial_EEPROM>
+	<Attributes>
+		<Url></Url>
+		<Image>Serial EEPROM.jpg</Image>
+		<File></File>
+	</Attributes>
+	<Events>
+		<OnLeftClick></OnLeftClick>
+		<OnRightClick></OnRightClick>
+		<OnDblClick></OnDblClick>
+		<OnMouseOver>PreviewImage</OnMouseOver>
+	</Events>
+</Serial_EEPROM>

@@ -1,0 +1,10 @@
+http://www.chipdip.ru/product/nrf24l01/
+	- радиомодуль
+http://fastnvr.ru/modul-spi-microsd-card-adapter-v10-arduino
+	- МОДУЛЬ SPI MICROSD CARD
+http://easy-robots.ru/connectors/connecting-wires-f-f-10sm-detail
+	- Соединительные провода «папа-папа»
+http://easy-robots.ru/connectors/connecting-wires-f-m-20sm-detail
+	- Соединительные провода «мама-папа»
+http://amperka.ru/product/pin-headers
+	- Штырьковые соединители (1×40)

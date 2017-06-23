@@ -1,0 +1,56 @@
+[DEVICE]
+Name=P18F45K22
+Clock=32000000
+[MEMORY_MODEL]
+Value=0
+[BUILD_TYPE]
+Value=0
+[ACTIVE_TAB]
+Value=Touch_Panel_Calibration_and_Write.c
+[USE_EEPROM]
+Value=0
+[EEPROM_DEFINITION]
+Value=
+[USE_HEAP]
+Value=0
+[HEAP_SIZE]
+Value=2000
+[FILES]
+Count=1
+File0=Touch_Panel_Calibration_and_Write.c
+[BINARIES]
+Count=0
+[IMAGES]
+Count=2
+File0=..\Touch Panel.jpg
+File1=..\..\EasyPIC7.jpg
+ActiveImageIndex=1
+[EEPROM]
+Count=0
+[ACTIVE_COMMENTS_FILES]
+Count=1
+File0=Touch_Panel.xml
+[HEADER_PATH]
+Count=0
+[HEADERS]
+Count=0
+[PLDS]
+Count=0
+[Useses]
+Count=11
+File0=Glcd
+File1=Glcd_Fonts
+File2=ADC
+File3=Touch_Panel
+File4=TouchPanel
+File5=Button
+File6=UART
+File7=C_String
+File8=Lcd
+File9=Lcd_Constants
+File10=
+[EXPANDED NODES]
+Node1=Sources
+Node2=Active Comments Files
+Node3=Output Files
+Count=3

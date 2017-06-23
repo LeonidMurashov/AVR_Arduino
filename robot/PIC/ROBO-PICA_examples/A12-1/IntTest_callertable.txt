@@ -1,0 +1,27 @@
+interrupt
+	Sound_Play
+		Div_16x16_U
+		Div_32x32_S
+			COMFREM
+			SDIV3232L
+		Mul_32x32_U
+		Delay_Cyc
+		Get_Fosc_kHz
+main
+	LCD_Out
+		Lcd_Chr_CP
+			Lcd_Cmd
+				Delay_50us
+				Delay_5500us
+				Delay_1us
+		Lcd_Cmd
+			Delay_50us
+			Delay_5500us
+			Delay_1us
+	Lcd_Cmd
+		Delay_50us
+		Delay_5500us
+		Delay_1us
+	Lcd_Init
+		Delay_5500us
+	Sound_Init

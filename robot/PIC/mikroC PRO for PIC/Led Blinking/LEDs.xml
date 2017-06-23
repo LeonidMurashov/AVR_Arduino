@@ -1,0 +1,13 @@
+<LEDs>
+	<Attributes>
+		<Url></Url>
+		<Image>LEDs.jpg</Image>
+		<File></File>
+	</Attributes>
+	<Events>
+		<OnLeftClick>None</OnLeftClick>
+		<OnRightClick>None</OnRightClick>
+		<OnDblClick>None</OnDblClick>
+		<OnMouseOver>PreviewImage</OnMouseOver>
+	</Events>
+</LEDs>

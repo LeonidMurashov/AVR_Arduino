@@ -1,0 +1,3 @@
+0	1	mikroCPIC1618.exe -MSF -DBG -pUNKNOWN -DL -O11111114 -fo20 -N"D:\робот\ultra.hex" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P18\" -SP"D:\робот\"	 
+error: 0	366	no files specified	no files specified
+error: 0	102	Finished (with errors): 29 окт 2015, 22:59:03	ultra.hex

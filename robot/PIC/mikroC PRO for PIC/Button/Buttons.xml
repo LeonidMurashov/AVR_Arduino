@@ -1,0 +1,13 @@
+<Buttons>
+	<Attributes>
+		<Url></Url>
+		<Image>Buttons.jpg</Image>
+		<File></File>
+	</Attributes>
+	<Events>
+		<OnLeftClick>None</OnLeftClick>
+		<OnRightClick>None</OnRightClick>
+		<OnDblClick>None</OnDblClick>
+		<OnMouseOver>PreviewImage</OnMouseOver>
+	</Events>
+</Buttons>

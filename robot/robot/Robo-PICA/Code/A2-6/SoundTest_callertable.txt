@@ -1,0 +1,10 @@
+main
+	Sound_Play
+		Div_16x16_U
+		Div_32x32_S
+			COMFREM
+			SDIV3232L
+		Mul_32x32_U
+		Delay_Cyc
+		Get_Fosc_kHz
+	Sound_Init

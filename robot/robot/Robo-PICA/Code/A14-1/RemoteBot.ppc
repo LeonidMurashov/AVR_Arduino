@@ -1,0 +1,32 @@
+[DeviceName]
+Value=P16F887
+[DeviceClock]
+Value=20
+[MainUnit]
+Value=
+[DeviceFlags]
+Count=3
+Value0=_HS_OSC = $3FFA
+Value1=_WDT_OFF = $3FF7
+Value2=_LVP_OFF = $2FFF
+[BuildType]
+bType=0
+[ProjectFiles]
+Count=1
+Value0=RemoteBot.c
+[HeaderFiles]
+Count=0
+[ObjLibFiles]
+Count=0
+[PLDFiles]
+Count=0
+[EEPROMinfo]
+isused=0
+[SearchPath]
+Count=4
+Value0=C:\Program Files\Mikroelektronika\mikroC\Defs\
+Value1=C:\Program Files\Mikroelektronika\mikroC\Uses\p16\
+Value2=E:\Work2007\MikroC\Code\A14-1\
+Value3=E:\Work2007\MikroC\Code\A2-1\
+[IncludePath]
+Count=0
