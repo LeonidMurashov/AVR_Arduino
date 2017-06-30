@@ -62,8 +62,7 @@ void loop() {
       up = !digitalRead(UP),
       down = !digitalRead(DOWN),
       squeese = !digitalRead(SQUEESE),
-      unsqueese = !digitalRead(UNSQUEESE),
-      ;
+      unsqueese = !digitalRead(UNSQUEESE);
 
   fast = !digitalRead(FAST);
   setMotorSpeed(x, y);
