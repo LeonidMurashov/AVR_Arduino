@@ -1,3 +1,4 @@
+// Константы о том, что на каких пинах стоит
 #define UP 51
 #define DOWN 53
 #define FAST 49
@@ -9,9 +10,10 @@
 #define JOY_X A14
 #define JOY_Z 37
 #define JOY_Y A15
-
 #define SERVO_KRAN 16
 #define SERVO_CLAW 17
+
+// константы ограничений и скоростей
 #define KRAN_MIN 5 
 #define KRAN_MAX 50 // pomenyaj menya 
 #define CLAW_MIN 5
@@ -28,7 +30,9 @@ Multiservo servo_claw, servo_kran;
 int claw_pos = CLAW_MAX, kran_pos = KRAN_MIN;
 bool fast;
 
+// Функция выполняется сразу после перезагрузки ардуино
 void setup() {
+  // Подключаем, инициализируем, бла бла бла...
   md.init();
   servo_claw.attach(SERVO_CLAW);
   servo_kran.attach(SERVO_KRAN);
@@ -39,26 +43,32 @@ void setup() {
   pinMode(JOY_Y, INPUT);
   pinMode(JOY_Z, INPUT);
   Serial.begin(9600);  
-
   fast = !digitalRead(FAST);
+
+  // В начале выставляем сервы в определённое положение
+  // Если этого не делать минус полробота
   servo_claw.write(CLAW_MAX);
   servo_kran.write(KRAN_MIN);
 }
-// Тест кириллицы
+
+// Функция вращения моторами
 void setMotorSpeed(int x, int y)
 { 
-    if(abs(x) < 25) x = 0;
-    if(abs(y) < 25) y = 0;
+  // Слепая зона и ограничение скорости(зависит от положения тумблера)
+  if(abs(x) < 25) x = 0;
+  if(abs(y) < 25) y = 0;
+  int limit = fast ? 255 : SLOW_SPEED;    
+  int m1 = constrain(y + x, -limit, limit),
+      m2 = constrain(y - x, -limit, limit);
 
-    int limit = fast ? 255 : SLOW_SPEED;    
-    int m1 = constrain(y + x, -limit, limit),
-        m2 = constrain(y - x, -limit, limit);
-    
-    md.setM1Speed(m1);
-    md.setM2Speed(m2);   
+  // Вот тут заставляем колёса крутиться
+  md.setM1Speed(m1);
+  md.setM2Speed(m2);   
 }
 
+// Бесконечный цикл
 void loop() {
+  // Считываем все кнопки
   int x = (analogRead(JOY_X)-512)/2,
       y = (analogRead(JOY_Y)-512)/2,
       up = !digitalRead(UP),
@@ -66,10 +76,12 @@ void loop() {
       squeese = !digitalRead(SQUEESE),
       unsqueese = !digitalRead(UNSQUEESE);
 
+  // Вращаем колёсами
   fast = !digitalRead(FAST);
   setMotorSpeed(x, y);
 
-  // CLAW CODE
+  // Обрабатываем кнопки для клешни
+  // Следим, чтобы ничего не вылетало за границы, а то минус полробота
   if(squeese)
   {
     if(claw_pos - CLAW_SPEED < CLAW_MIN)
@@ -87,7 +99,8 @@ void loop() {
     servo_claw.write(claw_pos);    
   }
 
-  // KRAN CODE
+  // Обрабатываем кнопки для крана
+  // Следим, чтобы ничего не вылетало за границы, а то минус полробота
   if(up)
   {
     if(kran_pos - KRAN_SPEED < KRAN_MIN)
@@ -104,9 +117,7 @@ void loop() {
       kran_pos += KRAN_SPEED;
     servo_kran.write(kran_pos);    
   }
-  
    
-  
   delay(10);
 }
 
