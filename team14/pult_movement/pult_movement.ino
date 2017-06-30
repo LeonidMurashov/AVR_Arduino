@@ -88,7 +88,7 @@ void loop() {
   // KRAN CODE
   if(up)
   {
-    if(kran_pos - KRAN_SPEED < CRAN_MIN)
+    if(kran_pos - KRAN_SPEED < KRAN_MIN)
       kran_pos = KRAN_MIN;
     else
       kran_pos -= KRAN_SPEED;
