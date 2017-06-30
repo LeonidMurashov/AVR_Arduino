@@ -49,15 +49,18 @@ void setMotorSpeed(int x, int y)
 { 
     if(abs(x) < 50) x = 0;
     if(abs(y) < 50) y = 0;
-    int m1 = min(y + x, fast ? 255 : SLOW_SPEED),
-        m2 = min(y - x, fast ? 255 : SLOW_SPEED);
+
+    int limit = fast ? 255 : SLOW_SPEED;    
+    int m1 = constrain(y + x, -limit, limit),
+        m2 = constrain(y - x, -limit, limit);
+    
     md.setM1Speed(m1);
     md.setM2Speed(m2);   
 }
 
 void loop() {
-  int x = analogRead(JOY_X)-512,
-      y = analogRead(JOY_Y)-512,
+  int x = (analogRead(JOY_X)-512)/2,
+      y = (analogRead(JOY_Y)-512)/2,
       up = !digitalRead(UP),
       down = !digitalRead(DOWN),
       squeese = !digitalRead(SQUEESE),
