@@ -29,7 +29,6 @@ int claw_pos = CLAW_MAX, kran_pos = KRAN_MIN;
 bool fast;
 
 void setup() {
-  // put your setup code here, to run once:
   md.init();
   servo_claw.attach(SERVO_CLAW);
   servo_kran.attach(SERVO_KRAN);
@@ -50,8 +49,8 @@ void setMotorSpeed(int x, int y)
 { 
     if(abs(x) < 50) x = 0;
     if(abs(y) < 50) y = 0;
-    int m1 = max(y + x, fast ? 255 : SLOW_SPEED),
-        m2 = max(y - x, fast ? 255 : SLOW_SPEED);
+    int m1 = min(y + x, fast ? 255 : SLOW_SPEED),
+        m2 = min(y - x, fast ? 255 : SLOW_SPEED);
     md.setM1Speed(m1);
     md.setM2Speed(m2);   
 }
