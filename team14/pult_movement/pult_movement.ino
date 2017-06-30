@@ -44,7 +44,7 @@ void setup() {
   servo_claw.write(CLAW_MAX);
   servo_kran.write(KRAN_MIN);
 }
-
+// Тест кириллицы
 void setMotorSpeed(int x, int y)
 { 
     if(abs(x) < 25) x = 0;
