@@ -47,8 +47,8 @@ void setup() {
 
 void setMotorSpeed(int x, int y)
 { 
-    if(abs(x) < 50) x = 0;
-    if(abs(y) < 50) y = 0;
+    if(abs(x) < 25) x = 0;
+    if(abs(y) < 25) y = 0;
 
     int limit = fast ? 255 : SLOW_SPEED;    
     int m1 = constrain(y + x, -limit, limit),
