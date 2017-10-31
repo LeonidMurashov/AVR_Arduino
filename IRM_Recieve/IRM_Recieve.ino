@@ -6,6 +6,8 @@ decode_results results;
 
 void setup()
 {
+  for(int i = 0; i < 4;i++)
+    pinMode(i+4, OUTPUT);
   Serial.begin(9600);
   irrecv.enableIRIn(); // Start the receiver
 }
@@ -14,39 +16,29 @@ void loop() {
   if (irrecv.decode(&results)) {
     Serial.println(results.value);
 
-   //dujjhygoolkqqqqaqq translateIR();
+    switch(results.value){
+      case 3255005345:
+        digitalWrite(4, HIGH);
+        Serial.println("Forward");
+        break;
+      case 2553984193:
+        digitalWrite(5, HIGH);
+        Serial.println("Left");
+        break;
+      case 2173897225:
+        digitalWrite(6, HIGH);
+        Serial.println("Backward");
+        break;
+      case 553866289:
+        digitalWrite(7, HIGH);
+        Serial.println("Right");
+        break;
+    }
 
+   //dujjhygoolkqqqqaqq translateIR();
     irrecv.resume(); // Receive the next value
+    delay(100);
+    for(int i = 0; i < 4;i++)
+      digitalWrite(i+4, LOW);
   }
 }
-
-/*-----( Declare User-written Functions )-----*/
-void translateIR() // takes action based on IR code received
-{
-
-  switch (results.value)
-  {
-    case 632192737:
-    case 1286666973:
-      Serial.println("Forward");
-      break;
-    case 4272685797:
-    case 4255908178:
-      Serial.println("Left");
-      break;
-    case 4239130559:
-//    case 4255908178:
-      Serial.println("Backward");
-      break;
-//    case 4239130559:
-    //case 4255908178:
-      Serial.println("Right");
-      break;
-    default:
-      Serial.println("Other button");
-  }
-
-  delay(100);
-
-
-} //END translateIR
