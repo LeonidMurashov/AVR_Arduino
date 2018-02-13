@@ -9,11 +9,11 @@ byte line[] = {A15, A14, A13},
               led = 53,
               encoder_left = 19,
               encoder_right = 20,
-              right_angle_steps = 18;
+              right_angle_steps = 20;
 bool encoder_left_state = 0,
      encoder_right_state = 0;
 volatile int rots_left = 0,
-    rots_right = 0;
+             rots_right = 0;
 
 
 ISR(TIMER1_COMPA_vect)
@@ -54,20 +54,19 @@ void setup()
   pinMode(button, INPUT_PULLUP);
   pinMode(encoder_left, INPUT);
   pinMode(encoder_right, INPUT);
+  digitalWrite(led, HIGH);
+  delay(10);
+  digitalWrite(led, LOW);
 
   while (digitalRead(button));
-  motor_claw.setSpeed(255);
-  while(true)
-  {
-    motor_claw.run(BACKWARD);
-    delay(200);
-    motor_claw.run(RELEASE);
-    delay(1000);
-    motor_claw.run(FORWARD);
-    delay(200);
-    motor_claw.run(RELEASE);
-    delay(1000);
-  }
+  do_steps(60, 60);
+  delay(1000);
+  do_steps(right_angle_steps, -right_angle_steps);
+  do_steps(right_angle_steps, -right_angle_steps);
+  delay(1000);
+  do_steps(60, 60);
+
+  while (true);
 
   while (!true) {
     int left = analogRead(line[0]), right = analogRead(line[2]);
@@ -76,18 +75,15 @@ void setup()
     Serial.println(right);
   }
 
-  digitalWrite(led, HIGH);
-  delay(10);
-  digitalWrite(led, LOW);
 
   while (digitalRead(button));
-  do_steps(right_angle_steps,-right_angle_steps);
+  do_steps(right_angle_steps, -right_angle_steps);
   delay(1000);
-  do_steps(right_angle_steps,-right_angle_steps);
+  do_steps(right_angle_steps, -right_angle_steps);
   delay(1000);
-  do_steps(right_angle_steps,-right_angle_steps);
+  do_steps(right_angle_steps, -right_angle_steps);
   delay(1000);
-  do_steps(right_angle_steps,-right_angle_steps);
+  do_steps(right_angle_steps, -right_angle_steps);
 
   digitalWrite(led, HIGH);
   delay(500);
@@ -104,12 +100,16 @@ void do_steps(int steps_left, int steps_right)
       rots_right_prev = rots_right,
       speed = 90;
 
+  bool left_fwd = 1,
+       right_fwd = 1;
+
   if (steps_left > 0)
     motor_left.run(FORWARD);
   else
   {
     steps_left *= -1;
     motor_left.run(BACKWARD);
+    left_fwd = 0;
   }
   if (steps_right > 0)
     motor_right.run(FORWARD);
@@ -117,23 +117,39 @@ void do_steps(int steps_left, int steps_right)
   {
     steps_right *= -1;
     motor_right.run(BACKWARD);
+    right_fwd = 0;
   }
 
   bool left_not_done, right_not_done;
+  int i = 0;
   do
   {
-    left_not_done = rots_left_prev + steps_left > rots_left;
-    right_not_done = rots_right_prev + steps_right > rots_right;
+    left_not_done = rots_left_prev + steps_left > rots_left+2;
+    right_not_done = rots_right_prev + steps_right > rots_right+2;
     if (left_not_done)
-      motor_left.setSpeed(((rots_left_prev + steps_left - rots_left)>8)*10 + 80);
+      motor_left.setSpeed(((rots_left_prev + steps_left - rots_left) > 8) * 10 + speed);
     else
-      motor_left.run(RELEASE);
+    {
+      motor_left.setSpeed(255);
+      motor_left.run(i%2 ? BACKWARD : FORWARD);
+    }
     if (right_not_done)
-      motor_right.setSpeed(((rots_right_prev + steps_right - rots_right)>8)*10 + 80);
+      motor_right.setSpeed(((rots_right_prev + steps_right - rots_right) > 8) * 10 + speed);
     else
-      motor_right.run(RELEASE);
+    {
+      motor_right.setSpeed(255);
+      motor_right.run(i%2 ? BACKWARD : FORWARD);
+    }
+    i+=1;
+    delay(9);
   }
   while (left_not_done || right_not_done);
+  //delay(500);
+  //Serial.print(rots_right_prev + steps_right - rots_right);
+  //erial.print(" ");
+  //Serial.println(rots_left_prev + steps_left - rots_left);
+  motor_right.run(RELEASE);
+  motor_left.run(RELEASE);
 }
 
 void gas_left(int sp)
