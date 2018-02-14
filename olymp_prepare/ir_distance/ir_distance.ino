@@ -30,7 +30,7 @@ int get_distance()
     delay(1);
   }
   r/=10;
-  return dists[r/16];//int(r*r*r*r/100000.f/10000.f-3*r*r*r/1000.f+0.003*r*r-1.15*r+184);
+  return dists[r/16];
 }
 
 void loop()

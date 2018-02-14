@@ -1,6 +1,7 @@
+#include <Ultrasonic.h>
+
 byte trig = 30, echo = 28;
 
-#include "Ultrasonic.h"
 Ultrasonic ultrasonic(trig, echo);
 
 void setup() 
