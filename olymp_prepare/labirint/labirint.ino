@@ -7,6 +7,8 @@ byte line[] = {A15, A14, A13, A12},
      trigs[]={22,26,28,24},
      echos[]={23,27,29,25};
 
+volatile int speed_left, speed_right;
+
 /// Forwarding
 bool forwarding = 0;
 byte forwarding_speed;
@@ -138,15 +140,13 @@ void setup()
   digitalWrite(led, LOW);
 
 
-  while (digitalRead(button) && !Serial.available());
-  Serial.read();
-
-  forward(80);
+  //forward(70);
   while(true)
   {
-    control_falling();
+    Serial.print(speed_left);
+    Serial.print(" ");
+    Serial.println(speed_right);
   }
-  
   while(!true)
   {
     int left = analogRead(line[0]), right = analogRead(line[2]);  
@@ -226,17 +226,38 @@ Vec4 rotate_states(Vec4 states, byte direction)
   return v;
 }
 
+volatile long long last_time_left = 0, last_time_right = 0, iterator=0;
+
 ISR(TIMER1_COMPA_vect)
 {
+  iterator++;
   if (digitalRead(encoder_left) != encoder_left_state)
   {
     rots_left += 1;
     encoder_left_state ^= 1;
+    if(encoder_left_state)
+    {
+      speed_left = int(1/((double(millis()-last_time_left))/(double)1000));
+      last_time_left = millis();
+    }
   }
   if (digitalRead(encoder_right) != encoder_right_state)
   {
     rots_right += 1;
     encoder_right_state ^= 1;
+    if(encoder_right_state)
+    {
+      speed_right = int(1/((double(millis()-last_time_right))/(double)1000));
+      last_time_right = millis();
+    }
+  }
+
+  if(iterator%250==0)
+  {
+    if(millis() - last_time_left > 200)
+      speed_left = 0;
+    if(millis() - last_time_right > 200)
+      speed_right = 0;
   }
 
   // forwarding module  
