@@ -14,6 +14,11 @@ bool forwarding = 0;
 byte forwarding_speed;
 ///
 
+/// ADS module
+volatile long long last_time_left = 0, last_time_right = 0, iterator=0;
+volatile int delta_left = 0, delta_right = 0;
+///
+
 Ultrasonic ultrasonic[] = {
                            Ultrasonic(trigs[0], echos[0]),
                            Ultrasonic(trigs[1], echos[1]),
@@ -140,12 +145,37 @@ void setup()
   digitalWrite(led, LOW);
 
 
-  //forward(70);
+  while (digitalRead(button) && !Serial.available());
+  Serial.read();
+
   while(true)
   {
-    Serial.print(speed_left);
+    forward();
+    while(get_distance(3) > 30)
+    {
+      control_falling();
+      delay(20);
+    }
+    while(get_distance(3) < 30)
+    {
+      Serial.println(get_distance(3));
+      control_falling();   
+      delay(20);   
+    }
+    stop();
+    do_steps(25,25);
+    Serial.println("Time to turn");
+    turn_left();
+    Serial.println("Turn complete");
+    stop();
+  }
+  
+  while(!true)
+  {
+    Serial.print(delta_left);
     Serial.print(" ");
-    Serial.println(speed_right);
+    Serial.println(delta_right);
+    delay(100);
   }
   while(!true)
   {
@@ -179,7 +209,7 @@ void setup()
     }
     Vec4 states;
     bool no_emergency;
-    forward(70);
+    forward();
     do
     {
       no_emergency = get_distance(0) > 5;
@@ -204,15 +234,12 @@ void setup()
 
 void control_falling()
 {
-  if(analogRead(line[0]) > 100 || analogRead(line[3]) > 100)
+  if(analogRead(line[0]) > 150 || analogRead(line[3]) > 150)
   {
+    Serial.println("We are falling!");
     forwarding = 0;
-    do_steps(-10-20*(analogRead(line[0]) > 100), -10-20*(analogRead(line[3]) > 100));
-    rots_left = 0;
-    rots_right = 0;
-    //forwarding = 1;
-    //motor_right.run(FORWARD);
-    //motor_left.run(FORWARD);
+    do_steps(-5-10*(analogRead(line[0]) > 100), -5-10*(analogRead(line[3]) > 100));
+    forward();  
   }
 }
 
@@ -226,7 +253,7 @@ Vec4 rotate_states(Vec4 states, byte direction)
   return v;
 }
 
-volatile long long last_time_left = 0, last_time_right = 0, iterator=0;
+#define SPEED 10
 
 ISR(TIMER1_COMPA_vect)
 {
@@ -252,6 +279,7 @@ ISR(TIMER1_COMPA_vect)
     }
   }
 
+  // Speed measurement
   if(iterator%250==0)
   {
     if(millis() - last_time_left > 200)
@@ -260,11 +288,25 @@ ISR(TIMER1_COMPA_vect)
       speed_right = 0;
   }
 
+  // ADS module
+  if(iterator%50==0)
+  {
+    const byte increment = 1, gist = 2;
+    if(speed_left < SPEED-gist)
+      delta_left+=increment;
+    else if(speed_left > SPEED+gist)
+      delta_left-=increment;
+    if(speed_right < SPEED-gist)
+      delta_right+=increment;
+    else if(speed_right > SPEED+gist)
+      delta_right-=increment;
+  }
+
   // forwarding module  
   if(forwarding)
   {
-    motor_left.setSpeed(forwarding_speed - 5*(rots_left-rots_right));
-    motor_right.setSpeed(forwarding_speed + 5*(rots_left-rots_right));
+    motor_left.setSpeed(max(0,forwarding_speed - 5*(rots_left-rots_right) + delta_left));
+    motor_right.setSpeed(max(0,forwarding_speed + 5*(rots_left-rots_right) + delta_right));
   }
 }
 
@@ -311,9 +353,15 @@ Vector get_path(byte p, byte t)
 
 int get_distance(byte n)
 {
-  delay(30);
-  int d = ultrasonic[n].distanceRead();
-  return d ? d : 255;
+  int sum = 0;
+  for(int i = 0; i < 3; i++)
+  {
+    int a = ultrasonic[n].distanceRead(); 
+    sum += a ? a : 255;
+    delay(30);
+  }
+
+  return sum;
 }
 
 void turn_right()
@@ -326,9 +374,10 @@ void turn_left()
   do_steps(-right_angle_steps, right_angle_steps);
 }
 
-void forward(int speed)
+void forward()
 {
-  forwarding_speed = speed;
+  stop();
+  forwarding_speed = 20;
   motor_right.run(FORWARD);
   motor_left.run(FORWARD);
   motor_right.setSpeed(forwarding_speed);
@@ -341,6 +390,10 @@ void forward(int speed)
 void stop()
 {
   forwarding = false;
+  delta_left = 0;
+  delta_right = 0;
+  rots_left = 0;
+  rots_right = 0;
   motor_right.run(RELEASE);
   motor_left.run(RELEASE);
 }
